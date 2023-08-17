@@ -1,24 +1,27 @@
 import React, { Component, SyntheticEvent } from "react";
 import "./Public.css";
+import axios from "axios";
 
 export default class Register extends Component {
-    first_name = '';
-    last_name = '';
-    email = '';
-    password = '';
-    password_confirm = '';
+  first_name = "";
+  last_name = "";
+  email = "";
+  password = "";
+  password_confirm = "";
 
-    submit = (e: SyntheticEvent) => {
-        e.preventDefault();
+  submit = async (e: SyntheticEvent) => {
+    e.preventDefault();
 
-        console.log({
-            first_name: this.first_name,
-            last_name: this.last_name,
-            email: this.email,
-            password: this.password,
-            password_confirm: this.password_confirm,
-        })
-    }
+    const response = await axios.post("http://127.0.0.1:8000/api/register", {
+      first_name: this.first_name,
+      last_name: this.last_name,
+      email: this.email,
+      password: this.password,
+      password_confirm: this.password_confirm,
+    });
+
+    console.log(response);
+  };
 
   render() {
     return (
@@ -35,7 +38,7 @@ export default class Register extends Component {
             className="form-control"
             placeholder="First Name"
             required
-            onChange={e => this.first_name = e.target.value}
+            onChange={(e) => (this.first_name = e.target.value)}
           />
           <label htmlFor="lastName" className="sr-only">
             Last Name
@@ -46,7 +49,7 @@ export default class Register extends Component {
             className="form-control"
             placeholder="Last Name"
             required
-            onChange={e => this.last_name = e.target.value}
+            onChange={(e) => (this.last_name = e.target.value)}
           />
 
           <label htmlFor="inputEmail" className="sr-only">
@@ -58,7 +61,7 @@ export default class Register extends Component {
             className="form-control"
             placeholder="Email address"
             required
-            onChange={e => this.email = e.target.value}
+            onChange={(e) => (this.email = e.target.value)}
           />
 
           <label htmlFor="inputPassword" className="sr-only">
@@ -70,7 +73,7 @@ export default class Register extends Component {
             className="form-control"
             placeholder="Password"
             required
-            onChange={e => this.password = e.target.value}
+            onChange={(e) => (this.password = e.target.value)}
           />
 
           <label htmlFor="passwordConfirm" className="sr-only">
@@ -82,7 +85,7 @@ export default class Register extends Component {
             className="form-control"
             placeholder="Confirm Password"
             required
-            onChange={e => this.password_confirm = e.target.value}
+            onChange={(e) => (this.password_confirm = e.target.value)}
           />
 
           <button className="btn btn-lg btn-primary btn-block" type="submit">

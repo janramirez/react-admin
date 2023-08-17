@@ -14,8 +14,8 @@ class Wrapper extends Component<{ children: React.ReactNode }> {
         redirect: false
     }
 
-    async componentDidMount() { // ----> [/] This one works
-    // componentDidMount = async () => { // ----> [X] This one has a bug
+    // async componentDidMount() { // ----> [/] This one works
+    componentDidMount = async () => { // ----> [X] This one has a bug
         try {
             const response = await axios.get('user',{
                 headers: {

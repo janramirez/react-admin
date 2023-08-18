@@ -17,12 +17,7 @@ class Wrapper extends Component<{ children: React.ReactNode }> {
     // async componentDidMount() { // ----> [/] This one works
     componentDidMount = async () => { // ----> [X] This one has a bug
         try {
-            const response = await axios.get('user',{
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-            // console.log(response);
+            const response = await axios.get('user');
 
         } catch (e) {
             console.log(e);

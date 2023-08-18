@@ -22,7 +22,7 @@ class Wrapper extends Component<{ children: React.ReactNode }> {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(response);
+            // console.log(response);
 
         } catch (e) {
             console.log(e);

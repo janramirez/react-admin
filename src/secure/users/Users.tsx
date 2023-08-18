@@ -75,7 +75,7 @@ class Users extends Component {
             <tbody>
               {this.state.users.map((user: User) => {
                 return (
-                  <tr>
+                  <tr key={user.id}>
                     <td>{user.id}</td>
                     <td>
                       {user.first_name} {user.last_name}

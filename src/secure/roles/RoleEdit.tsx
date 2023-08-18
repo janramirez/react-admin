@@ -1,38 +1,57 @@
-import React, { Component, SyntheticEvent } from "react";
+import React, { Component, PropsWithRef, SyntheticEvent } from "react";
 import Wrapper from "../Wrapper";
 import axios from "axios";
 import { Permission } from "../../classes/permission";
 import { Navigate } from "react-router-dom";
+import { withRouter } from "../users/UserEdit";
+import { Role } from "../../classes/role";
 
-export default class RoleCreate extends Component {
+class RoleEdit extends React.Component<PropsWithRef<any>> {
   state = {
+    name: '',
+    selected: [],
     permissions: [],
     redirect: false,
   };
 
   selected: number[] = [];
   name = '';
+  id = 0;
 
   componentDidMount = async () => {
-    const res = await axios.get("permissions");
+    this.id = this.props.match.params.id;
+
+    const fetchPermissions = await axios.get("permissions");
+
+    const fetchRole = await axios.get(`roles/${this.id}`)
+
+    const role: Role = fetchRole.data.data;
+
+    this.selected = role.permissions.map((p: Permission) => p.id );
 
     this.setState({
-      permissions: res.data.data,
+      name: role.name,
+      selected: this.selected,
+      permissions: fetchPermissions.data.data,
     });
   };
 
   check = (id: number) => {
-    if(this.selected.filter(s => s === id).length > 0) {
+    if(this.isChecked(id)) {
         this.selected = this.selected.filter(s => s !== id);
         return;
     }
     this.selected.push(id);
   }
 
+  isChecked = (id: number) => {
+    return this.state.selected.filter(s => s === id).length > 0;
+  }
+
   submit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    await axios.post('roles', {
+    await axios.put(`roles/${this.id}`, {
         name: this.name,
         permissions: this.selected
     })
@@ -62,6 +81,7 @@ export default class RoleCreate extends Component {
                 name="name"
                 id="name"
                 className="form-control"
+                defaultValue={this.name = this.state.name}
                 onChange={e => this.name = e.target.value}
               />
             </div>
@@ -73,7 +93,13 @@ export default class RoleCreate extends Component {
               {this.state.permissions.map((p: Permission) => {
                 return (
                   <div className="form-check form-check-inline col-3" key={p.id}>
-                    <input type="checkbox" className="form-check-input" value={p.id} onChange={e => this.check(p.id)}/>
+                    <input 
+                     type="checkbox" 
+                     className="form-check-input" 
+                     value={p.id} 
+                     defaultChecked={this.isChecked(p.id)} 
+                     onChange={e => this.check(p.id)}
+                    />
                     <label className="form-check-label">{p.name}</label>
                   </div>
                 );
@@ -87,3 +113,5 @@ export default class RoleCreate extends Component {
     );
   }
 }
+
+export default withRouter(RoleEdit);

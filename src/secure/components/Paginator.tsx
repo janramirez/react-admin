@@ -1,25 +1,26 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
-export default class Paginator extends Component<{lastPage: number, handlePageChange: any}> {
+export default class Paginator extends Component<{
+  lastPage: number;
+  handlePageChange: any;
+}> {
+  page = 1;
 
-    page = 1;
+  prev = () => {
+    if (this.page === 1) return;
 
-    prev = () => {
-        if (this.page === 1) return;
-    
-        this.page--;
+    this.page--;
 
-        this.props.handlePageChange(this.page);
-      };
-    
-      next = () => {
-        if (this.page === this.props.lastPage) return;
-    
-        this.page++;
+    this.props.handlePageChange(this.page);
+  };
 
-        this.props.handlePageChange(this.page);
-      };
+  next = () => {
+    if (this.page === this.props.lastPage) return;
 
+    this.page++;
+
+    this.props.handlePageChange(this.page);
+  };
 
   render() {
     return (
@@ -39,6 +40,6 @@ export default class Paginator extends Component<{lastPage: number, handlePageCh
           </ul>
         </nav>
       </div>
-    )
+    );
   }
 }

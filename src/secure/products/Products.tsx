@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { Product } from "../../classes/product";
 import Paginator from "../components/Paginator";
+import Deleter from "../components/Deleter";
 
 class Products extends Component {
   state = {
@@ -22,21 +23,17 @@ class Products extends Component {
     this.last_page = res.data.meta.last_page;
   };
 
-  delete = async (id: number) => {
-    if(window.confirm('Are you sure you want to delete this Product?')) {
-        await axios.delete(`products/${id}`);
-  
-        this.setState({
-          products: this.state.products.filter((p: Product) => p.id !== id)
-        })
-      }
-  }
+  handleDelete = async (id: number) => {
+    this.setState({
+      products: this.state.products.filter((p: Product) => p.id !== id),
+    });
+  };
 
   handlePageChange = async (page: number) => {
     this.page = page;
 
     await this.componentDidMount();
-  }
+  };
 
   render() {
     return (
@@ -68,7 +65,9 @@ class Products extends Component {
                 return (
                   <tr key={product.id}>
                     <td>{product.id}</td>
-                    <td><img src={product.image} alt="image" width="50" /></td>
+                    <td>
+                      <img src={product.image} alt="image" width="50" />
+                    </td>
                     <td>{product.title}</td>
                     <td>{product.description}</td>
                     <td>{product.price}</td>
@@ -80,13 +79,11 @@ class Products extends Component {
                         >
                           Edit
                         </Link>
-                        <a
-                          href="#"
-                          className="btn btn-sm btn-outline-secondary"
-                          onClick={() => this.delete(product.id)}
-                        >
-                          Delete
-                        </a>
+                        <Deleter
+                          id={product.id}
+                          endpoint={'products'}
+                          handleDeleter={this.handleDelete}
+                        />
                       </div>
                     </td>
                   </tr>
@@ -96,7 +93,10 @@ class Products extends Component {
           </table>
         </div>
 
-        <Paginator lastPage={this.last_page} handlePageChange={this.handlePageChange} />
+        <Paginator
+          lastPage={this.last_page}
+          handlePageChange={this.handlePageChange}
+        />
       </Wrapper>
     );
   }

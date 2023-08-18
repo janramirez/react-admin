@@ -4,6 +4,7 @@ import axios from "axios";
 import { User } from "../../classes/user";
 import { Link } from "react-router-dom";
 import Paginator from "../components/Paginator";
+import Deleter from "../components/Deleter";
 
 class Users extends Component {
   state = {
@@ -23,21 +24,17 @@ class Users extends Component {
     this.last_page = response.data.meta.last_page;
   };
 
-  delete = async (id: number) => {
-    if(window.confirm('Are you sure you want to delete this user?')) {
-      await axios.delete(`users/${id}`);
-
-      this.setState({
-        users: this.state.users.filter((u: User) => u.id !== id)
-      })
-    }
-  }
+  handleDelete = async (id: number) => {
+    this.setState({
+      users: this.state.users.filter((u: User) => u.id !== id),
+    });
+  };
 
   handlePageChange = async (page: number) => {
     this.page = page;
 
     await this.componentDidMount();
-  }
+  };
 
   render() {
     return (
@@ -76,18 +73,16 @@ class Users extends Component {
                     <td>
                       <div className="btn-group mr-2">
                         <Link
-                        to={`/users/${user.id}/edit`}
+                          to={`/users/${user.id}/edit`}
                           className="btn btn-sm btn-outline-secondary"
                         >
                           Edit
                         </Link>
-                        <a
-                          href="#"
-                          className="btn btn-sm btn-outline-secondary"
-                          onClick={() => this.delete(user.id)}
-                        >
-                          Delete
-                        </a>
+                        <Deleter
+                          id={user.id}
+                          endpoint={"users"}
+                          handleDeleter={this.handleDelete}
+                        />
                       </div>
                     </td>
                   </tr>
@@ -97,7 +92,10 @@ class Users extends Component {
           </table>
         </div>
 
-        <Paginator lastPage={this.last_page} handlePageChange={this.handlePageChange} />
+        <Paginator
+          lastPage={this.last_page}
+          handlePageChange={this.handlePageChange}
+        />
       </Wrapper>
     );
   }

@@ -16,21 +16,45 @@ export default class Orders extends Component {
         const response = await axios.get(`orders?page=${this.page}`);
 
         this.setState({ orders: response.data.data });
-        
+
         this.last_page = response.data.meta.last_page;
     };
-
-
 
     handlePageChange = async (page: number) => {
         this.page = page;
 
         await this.componentDidMount();
+    };
+
+    handleExport = async () => {
+        const response = await axios.get('export', {
+            responseType: 'blob'
+        });
+
+        const blob = new Blob([ response.data], { type: 'text/csv' });
+
+        const downloadUrl = window.URL.createObjectURL(response.data);
+
+        const link = document.createElement('a');
+
+        link.href= downloadUrl;
+        link.download = 'orders.csv';
+        link.click();
     }
 
-    render() { 
+    render() {
         return (
             <Wrapper>
+                <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <div className="btn-toolbar mb-2 mb-md-0">
+                        <a
+                            onClick={this.handleExport}
+                            className="btn btn-sm btn-outline-secondary"
+                        >
+                            Export
+                        </a>
+                    </div>
+                </div>
                 <div className="table-responsive">
                     <table className="table table-striped table-sm">
                         <thead>
@@ -60,7 +84,6 @@ export default class Orders extends Component {
                                                 >
                                                     View
                                                 </Link>
-    
                                             </div>
                                         </td>
                                     </tr>
@@ -69,7 +92,10 @@ export default class Orders extends Component {
                         </tbody>
                     </table>
                 </div>
-                <Paginator lastPage={this.last_page} handlePageChange={this.handlePageChange} />
+                <Paginator
+                    lastPage={this.last_page}
+                    handlePageChange={this.handlePageChange}
+                />
             </Wrapper>
         );
     }

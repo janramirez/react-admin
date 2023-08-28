@@ -33,7 +33,7 @@ class Nav extends Component<{ user: User }> {
 
         <ul className="my-2 my-md-0 mr-md-3">
             <Link to={'/profile'} className="p-2 text-white">
-              {this.props.user.first_name} {this.props.user.last_name}
+              {this.props.user.name}
             </Link>
             <a className="p-2 text-white" href="#" onClick={this.handleClick}>
               Sign out

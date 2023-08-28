@@ -8,7 +8,8 @@ import configureStore from './redux/configureStore';
 import { Provider } from 'react-redux';
 
 axios.defaults.baseURL = 'http://localhost:8000/api/';
-axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+axios.defaults.withCredentials = true;
+// axios.defaults.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
 
 const store = configureStore();
 

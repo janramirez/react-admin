@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 import { User } from "../../classes/user";
 import { Role } from "../../classes/role";
 import { connect } from "react-redux";
+import axios from "axios";
 
 class Nav extends Component<{ user: User }> {
 
@@ -11,8 +12,9 @@ class Nav extends Component<{ user: User }> {
     redirect: false
   }
 
-  handleClick = () => {
-    localStorage.clear();
+  handleClick = async () => {
+    // localStorage.clear();
+    await axios.post('logout', {});
 
     this.setState({
       redirect: true

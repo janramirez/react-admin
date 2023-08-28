@@ -4,8 +4,10 @@ import axios from "axios";
 import { Role } from "../../classes/role";
 import { Link } from "react-router-dom";
 import Deleter from "../components/Deleter";
+import { connect } from "react-redux";
+import { User } from "../../classes/user";
 
-export default class Roles extends Component {
+class Roles extends Component<{ user: User }> {
   state = {
     roles: [],
   };
@@ -16,7 +18,6 @@ export default class Roles extends Component {
     this.setState({
       roles: res.data.data,
     });
-    console.log(res);
   };
 
   handleDelete = async (id: number) => {
@@ -25,10 +26,32 @@ export default class Roles extends Component {
     });
   };
 
+  actions = (id: number) => {
+    if (this.props.user.canEdit("roles")) {
+        return (
+            <div className="btn-group mr-2">
+                <Link
+                    to={`/roles/${id}/edit`}
+                    className="btn btn-sm btn-outline-secondary"
+                >
+                    Edit
+                </Link>
+                <Deleter
+                    id={id}
+                    endpoint={"roles"}
+                    handleDeleter={this.handleDelete}
+                />
+            </div>
+        );
+    }
+};
+
   render() {
-    return (
-      <Wrapper>
-        <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    let addButton = null;
+
+    if (this.props.user.canEdit("roles")) {
+        addButton = (
+          <div className="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
           <div className="btn-toolbar mb-2 mb-md-0">
             <Link
               to={"/roles/create"}
@@ -38,6 +61,14 @@ export default class Roles extends Component {
             </Link>
           </div>
         </div>
+        );
+    }
+
+    return (
+      <Wrapper>
+
+        {addButton}
+
         <div className="table-responsive">
           <table className="table table-striped table-sm">
             <thead>
@@ -53,21 +84,7 @@ export default class Roles extends Component {
                   <tr key={role.id}>
                     <td>{role.id}</td>
                     <td>{role.name}</td>
-                    <td>
-                      <div className="btn-group mr-2">
-                        <Link
-                          to={`/roles/${role.id}/edit`}
-                          className="btn btn-sm btn-outline-secondary"
-                        >
-                          Edit
-                        </Link>
-                        <Deleter
-                          id={role.id}
-                          endpoint={"roles"}
-                          handleDeleter={this.handleDelete}
-                        />
-                      </div>
-                    </td>
+                    <td>{this.actions(role.id)}</td>
                   </tr>
                 );
               })}
@@ -78,3 +95,6 @@ export default class Roles extends Component {
     );
   }
 }
+
+// @ts-ignore
+export default connect(state => ({ user: state.user }))(Roles);

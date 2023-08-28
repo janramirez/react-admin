@@ -28,7 +28,7 @@ export default class Orders extends Component {
         await this.componentDidMount();
     }
 
-    render() {
+    render() { 
         return (
             <Wrapper>
                 <div className="table-responsive">

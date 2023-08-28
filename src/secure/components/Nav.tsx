@@ -1,10 +1,25 @@
+import axios from "axios";
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import { User } from "../../classes/user";
+import { Role } from "../../classes/role";
 
 class Nav extends Component {
 
   state = {
+    user: new User(0,'', '', '', new Role(), []),
     redirect: false
+  }
+
+  componentDidMount = async () => {
+    const response = await axios.get('user');
+
+    const userData: User = response.data.data;
+
+    this.setState({
+      user: userData
+    })
   }
 
   handleClick = () => {
@@ -15,7 +30,7 @@ class Nav extends Component {
     })
   }
 
-  render(): React.ReactNode {
+  render() {
 
     if(this.state.redirect){
       return <Navigate to={'/login'} />
@@ -27,12 +42,13 @@ class Nav extends Component {
           Company Name
         </a>
 
-        <ul className="navbar-nav px-3">
-          <li className="nav-item text-nowrap">
-            <a className="nav-link" href="#" onClick={this.handleClick}>
+        <ul className="my-2 my-md-0 mr-md-3">
+            <Link to={'/profile'} className="p-2 text-white">
+              {this.state.user.first_name} {this.state.user.last_name}
+            </Link>
+            <a className="p-2 text-white" href="#" onClick={this.handleClick}>
               Sign out
             </a>
-          </li>
         </ul>
       </nav>
     );

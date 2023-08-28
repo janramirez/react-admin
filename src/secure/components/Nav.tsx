@@ -1,25 +1,14 @@
-import axios from "axios";
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import { User } from "../../classes/user";
 import { Role } from "../../classes/role";
+import { connect } from "react-redux";
 
-class Nav extends Component {
+class Nav extends Component<{ user: User }> {
 
   state = {
-    user: new User(0,'', '', '', new Role(), []),
     redirect: false
-  }
-
-  componentDidMount = async () => {
-    const response = await axios.get('user');
-
-    const userData: User = response.data.data;
-
-    this.setState({
-      user: userData
-    })
   }
 
   handleClick = () => {
@@ -44,7 +33,7 @@ class Nav extends Component {
 
         <ul className="my-2 my-md-0 mr-md-3">
             <Link to={'/profile'} className="p-2 text-white">
-              {this.state.user.first_name} {this.state.user.last_name}
+              {this.props.user.first_name} {this.props.user.last_name}
             </Link>
             <a className="p-2 text-white" href="#" onClick={this.handleClick}>
               Sign out
@@ -54,5 +43,5 @@ class Nav extends Component {
     );
   }
 }
-
-export default Nav;
+// @ts-ignore
+export default connect(state => ({ user: state.user }))(Nav);

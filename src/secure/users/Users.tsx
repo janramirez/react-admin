@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Paginator from "../components/Paginator";
 import Deleter from "../components/Deleter";
 import { connect } from "react-redux";
+import constants from "../../constants";
 
 class Users extends Component<{ user: User }> {
     state = {
@@ -16,7 +17,7 @@ class Users extends Component<{ user: User }> {
     last_page = 0;
 
     componentDidMount = async () => {
-        const response = await axios.get(`users?page=${this.page}`);
+        const response = await axios.get(`${constants.USERS_URL}/users?page=${this.page}`);
 
         this.setState({
             users: response.data.data,
@@ -49,7 +50,7 @@ class Users extends Component<{ user: User }> {
                 </Link>
                 <Deleter
                     id={id}
-                    endpoint={"users"}
+                    endpoint={`${constants.USERS_URL}/users`}
                     handleDeleter={this.handleDelete}
                 />
             </div>
@@ -93,14 +94,14 @@ class Users extends Component<{ user: User }> {
                         <tbody>
                             {this.state.users.map((user: User) => {
                                 return (
-                                    <tr key={user.id}>
-                                        <td>{user.id}</td>
+                                    <tr key={user?.id}>
+                                        <td>{user?.id}</td>
                                         <td>
-                                            {user.first_name} {user.last_name}
+                                            {user?.first_name} {user?.last_name}
                                         </td>
-                                        <td>{user.email}</td>
-                                        <td>{user.role.name}</td>
-                                        <td>{this.actions(user.id)}</td>
+                                        <td>{user?.email}</td>
+                                        <td>{user?.role?.name}</td>
+                                        <td>{this.actions(user?.id)}</td>
                                     </tr>
                                 );
                             })}

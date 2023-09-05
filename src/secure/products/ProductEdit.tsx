@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import ImageUpload from "../components/ImageUpload";
 import { Product } from "../../classes/product";
 import { withRouter } from "../users/UserEdit";
+import constants from "../../constants";
 
 class ProductEdit extends React.Component<PropsWithRef<any>> {
   state = {
@@ -23,7 +24,7 @@ class ProductEdit extends React.Component<PropsWithRef<any>> {
   componentDidMount = async () => {
     this.id = this.props.match.params.id;
 
-    const res = await axios.get(`products/${this.id}`);
+    const res = await axios.get(`${constants.BASE_URL}/products/${this.id}`);
 
     const product: Product = res.data.data;
 
@@ -38,7 +39,7 @@ class ProductEdit extends React.Component<PropsWithRef<any>> {
   submit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    await axios.put(`products/${this.id}`, {
+    await axios.put(`${constants.BASE_URL}/products/${this.id}`, {
       title: this.state.title,
       description: this.state.description,
       image: this.state.image,

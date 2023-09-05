@@ -5,6 +5,7 @@ import { Permission } from "../../classes/permission";
 import { Navigate } from "react-router-dom";
 import { withRouter } from "../users/UserEdit";
 import { Role } from "../../classes/role";
+import constants from "../../constants";
 
 class RoleEdit extends React.Component<PropsWithRef<any>> {
   state = {
@@ -21,9 +22,9 @@ class RoleEdit extends React.Component<PropsWithRef<any>> {
   componentDidMount = async () => {
     this.id = this.props.match.params.id;
 
-    const fetchPermissions = await axios.get("permissions");
+    const fetchPermissions = await axios.get(`${constants.BASE_URL}/permissions`);
 
-    const fetchRole = await axios.get(`roles/${this.id}`)
+    const fetchRole = await axios.get(`${constants.BASE_URL}/roles/${this.id}`)
 
     const role: Role = fetchRole.data.data;
 
@@ -51,7 +52,7 @@ class RoleEdit extends React.Component<PropsWithRef<any>> {
   submit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    await axios.put(`roles/${this.id}`, {
+    await axios.put(`${constants.BASE_URL}/roles/${this.id}`, {
         name: this.name,
         permissions: this.selected
     })

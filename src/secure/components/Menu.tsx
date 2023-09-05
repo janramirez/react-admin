@@ -26,10 +26,10 @@ class Menu extends Component<{ user: User }> {
     render() {
         let menu: JSX.Element[] = [];
 
-        this.menuItems.forEach((item) => {
+        this.menuItems.forEach((item, index) => {
             if (this.props.user.canView(item.name.toLowerCase())) {
                 menu.push(
-                    <li className="nav-item">
+                    <li className="nav-item" key={index}>
                         <NavLink to={item.link} className="nav-link">
                             {item.name}
                         </NavLink>

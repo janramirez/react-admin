@@ -4,6 +4,7 @@ import axios from 'axios'
 import { withRouter } from '../users/UserEdit';
 import { Order } from '../../classes/order';
 import { OrderItem } from '../../classes/order_item';
+import constants from '../../constants';
 
 class OrderItems extends Component<PropsWithRef<any>> {
     state = {
@@ -14,7 +15,7 @@ class OrderItems extends Component<PropsWithRef<any>> {
     componentDidMount = async () => {
         this.id = this.props.match.params.id;
 
-        const response = await axios.get(`orders/${this.id}`);
+        const response = await axios.get(`${constants.BASE_URL}/orders/${this.id}`);
 
         const order: Order = response.data.data;
 

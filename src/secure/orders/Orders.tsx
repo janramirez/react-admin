@@ -4,6 +4,7 @@ import axios from "axios";
 import { Order } from "../../classes/order";
 import { Link } from "react-router-dom";
 import Paginator from "../components/Paginator";
+import constants from "../../constants";
 
 export default class Orders extends Component {
     state = {
@@ -13,7 +14,7 @@ export default class Orders extends Component {
     last_page = 0;
 
     componentDidMount = async () => {
-        const response = await axios.get(`orders?page=${this.page}`);
+        const response = await axios.get(`${constants.BASE_URL}/orders?page=${this.page}`);
 
         this.setState({ orders: response.data.data });
 
@@ -27,7 +28,7 @@ export default class Orders extends Component {
     };
 
     handleExport = async () => {
-        const response = await axios.get('export', {
+        const response = await axios.get(`${constants.BASE_URL}/export`, {
             responseType: 'blob'
         });
 

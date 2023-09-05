@@ -7,6 +7,7 @@ import Paginator from "../components/Paginator";
 import Deleter from "../components/Deleter";
 import { connect } from "react-redux";
 import { User } from "../../classes/user";
+import constants from "../../constants";
 
 class Products extends Component<{ user: User }> {
     state = {
@@ -16,7 +17,7 @@ class Products extends Component<{ user: User }> {
     last_page = 0;
 
     componentDidMount = async () => {
-        const res = await axios.get(`products?page=${this.page}`);
+        const res = await axios.get(`${constants.BASE_URL}/products?page=${this.page}`);
 
         this.setState({
             products: res.data.data,
@@ -49,7 +50,7 @@ class Products extends Component<{ user: User }> {
                     </Link>
                     <Deleter
                         id={id}
-                        endpoint={"products"}
+                        endpoint={`${constants.BASE_URL}/products`}
                         handleDeleter={this.handleDelete}
                     />
                 </div>

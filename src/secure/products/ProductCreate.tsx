@@ -3,6 +3,7 @@ import Wrapper from "../Wrapper";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
 import ImageUpload from "../components/ImageUpload";
+import constants from "../../constants";
 
 export default class ProductCreate extends Component {
     state = {
@@ -17,7 +18,7 @@ export default class ProductCreate extends Component {
   submit = async (e:SyntheticEvent) => {
     e.preventDefault();
 
-    await axios.post('products', {
+    await axios.post(`${constants.BASE_URL}/products`, {
         title: this.title,
         description: this.description,
         image: this.image,

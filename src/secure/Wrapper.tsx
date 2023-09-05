@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { User } from "../classes/user";
 import setUser from "../redux/actions/setUserAction";
+import constants from "../constants";
 
 type Props = {
     children: React.ReactNode
@@ -19,7 +20,7 @@ class Wrapper extends Component<PropsWithChildren<any>> {
 
     componentDidMount = async () => { 
         try {
-            const response = await axios.get('user');
+            const response = await axios.get(`${constants.USERS_URL}/user`);
 
             const user: User = response.data.data;
 

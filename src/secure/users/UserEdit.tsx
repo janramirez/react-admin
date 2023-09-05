@@ -4,6 +4,7 @@ import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Role } from '../../classes/role';
 import { User } from '../../classes/user';
+import constants from '../../constants';
 
 export function withRouter(Children: any){
     return(props: any)=>{
@@ -31,9 +32,9 @@ class UserEdit extends React.Component<PropsWithRef<any>> {
     componentDidMount = async () => {
         this.id = this.props.match.params.id;
 
-        const fetchRoles = await axios.get('roles');
+        const fetchRoles = await axios.get(`${constants.BASE_URL}/roles`);
 
-        const fetchUser = await axios.get(`users/${this.id}`);
+        const fetchUser = await axios.get(`${constants.USERS_URL}/users/${this.id}`);
 
         const user: User = fetchUser.data.data;
 
@@ -49,7 +50,7 @@ class UserEdit extends React.Component<PropsWithRef<any>> {
 submit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-        await axios.put(`users/${this.id}`, {
+        await axios.put(`${constants.USERS_URL}/users/${this.id}`, {
             first_name: this.first_name,
             last_name: this.last_name,
             email: this.email,

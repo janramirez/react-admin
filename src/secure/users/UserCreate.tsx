@@ -3,6 +3,7 @@ import Wrapper from '../Wrapper'
 import axios from 'axios'
 import { Role } from '../../classes/role'
 import { Navigate } from 'react-router-dom'
+import constants from '../../constants'
 
 export default class UserCreate extends Component {
 
@@ -16,7 +17,7 @@ export default class UserCreate extends Component {
     role_id = 0;
 
     componentDidMount = async () => {
-        const response = await axios.get('roles');
+        const response = await axios.get(`${constants.BASE_URL}/roles`);
 
         this.setState({
             roles: response.data.data
@@ -26,7 +27,7 @@ export default class UserCreate extends Component {
     submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
-        await axios.post('users', {
+        await axios.post(`${constants.USERS_URL}/users`, {
             first_name: this.first_name,
             last_name: this.last_name,
             email: this.email,

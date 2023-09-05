@@ -4,6 +4,7 @@ import c3 from "c3";
 import axios from "axios";
 import { connect } from "react-redux";
 import { User } from "../../classes/user";
+import constants from "../../constants";
 
 class Dashboard extends Component<{ user: User }> {
     componentDidMount = async () => {
@@ -27,7 +28,7 @@ class Dashboard extends Component<{ user: User }> {
                 },
             });
 
-            const response = await axios.get("chart");
+            const response = await axios.get(`${constants.BASE_URL}/chart`);
 
             const records: { date: string; sum: number }[] = response.data.data;
 

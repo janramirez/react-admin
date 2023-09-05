@@ -3,6 +3,7 @@ import Wrapper from "../Wrapper";
 import axios from "axios";
 import { Permission } from "../../classes/permission";
 import { Navigate } from "react-router-dom";
+import constants from "../../constants";
 
 export default class RoleCreate extends Component {
   state = {
@@ -14,7 +15,7 @@ export default class RoleCreate extends Component {
   name = '';
 
   componentDidMount = async () => {
-    const res = await axios.get("permissions");
+    const res = await axios.get(`${constants.BASE_URL}/permissions`);
 
     this.setState({
       permissions: res.data.data,

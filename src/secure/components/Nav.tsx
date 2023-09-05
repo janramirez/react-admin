@@ -5,6 +5,7 @@ import { User } from "../../classes/user";
 import { Role } from "../../classes/role";
 import { connect } from "react-redux";
 import axios from "axios";
+import constants from "../../constants";
 
 class Nav extends Component<{ user: User }> {
 
@@ -14,7 +15,7 @@ class Nav extends Component<{ user: User }> {
 
   handleClick = async () => {
     // localStorage.clear();
-    await axios.post('logout', {});
+    await axios.post(`${constants.USERS_URL}/logout`, {});
 
     this.setState({
       redirect: true

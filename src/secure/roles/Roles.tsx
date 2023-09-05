@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Deleter from "../components/Deleter";
 import { connect } from "react-redux";
 import { User } from "../../classes/user";
+import constants from "../../constants";
 
 class Roles extends Component<{ user: User }> {
   state = {
@@ -13,7 +14,7 @@ class Roles extends Component<{ user: User }> {
   };
 
   componentDidMount = async () => {
-    const res = await axios.get("roles");
+    const res = await axios.get(`${constants.BASE_URL}/roles`);
 
     this.setState({
       roles: res.data.data,
@@ -38,7 +39,7 @@ class Roles extends Component<{ user: User }> {
                 </Link>
                 <Deleter
                     id={id}
-                    endpoint={"roles"}
+                    endpoint={`${constants.BASE_URL}/roles`}
                     handleDeleter={this.handleDelete}
                 />
             </div>
